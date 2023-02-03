@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+    $ur = Http::get('https://api.binance.com/api/v3/ticker/24hr');
+     $pokemons = $ur->json();
+
+  //  $ur = Http::get('https://www.canalti.com.br/api/pokemons.json');
+  //  $pokemons = $ur->json();
+
+   // dd($pokemons);
+   return view('welcome', compact('pokemons'));
 });
+
+

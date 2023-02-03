@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Models\Tarefa;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
+
 
 class TarefaCommand extends Command
 {
@@ -12,7 +14,8 @@ class TarefaCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'tarefa:create'; //nome tarefa
+   // protected $signature = 'tarefa:create'; //nome tarefa
+    protected $signature = 'c:saveBidPriceOnDataBase'; //nome tarefa
     
 
     /**
@@ -29,8 +32,13 @@ class TarefaCommand extends Command
      */
     public function handle()
     {
+        $ur = Http::get('https://api.binance.com/api/v3/ticker/24hr');
+        $apiArray = $ur->json([11]); // position BTCUSDT 
+
        // return Command::SUCCESS;
         $tarefa = new Tarefa();
+        $tarefa['name'] = $apiArray['symbol'];
+        $tarefa['bidPrice'] = $apiArray['bidPrice'];
         $tarefa->save();
     }
 }
